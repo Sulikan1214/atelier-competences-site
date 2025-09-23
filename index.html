@@ -1,0 +1,1844 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Identifier et Valoriser ses Compétences - Atelier PLS</title>
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        /* Particules flottantes */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            z-index: 10;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .title-slide .slide-title {
+            color: white;
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .title-slide .slide-subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.8em;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Style pour les slides de contenu */
+        .content-slide {
+            max-width: 900px;
+            width: 90%;
+            margin: 0 auto;
+            text-align: center;
+            color: white;
+            padding: 20px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .content-title {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #fbbf24;
+        }
+
+        .content-section {
+            margin-bottom: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            text-align: left;
+        }
+
+        .content-section h3 {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            color: #fbbf24;
+            text-align: center;
+        }
+
+        .content-section p, .content-section li {
+            font-size: 1em;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .skill-example {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border-left: 4px solid #fbbf24;
+            font-style: italic;
+        }
+
+        .skill-example strong {
+            color: #667eea;
+        }
+
+        .competence-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .competence-item {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .competence-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .competence-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .competence-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .competence-desc {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: left;
+        }
+
+        /* Style carte mentale */
+        .mindmap-container {
+            width: 100%;
+            height: 80%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .question-title {
+            font-size: 1.8em;
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: bold;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            animation: slideDown 0.8s ease-out;
+            position: relative;
+            z-index: 20;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Nœud central */
+        .central-question {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 30px;
+            width: 320px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4em;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            z-index: 15;
+            animation: scaleIn 1s ease-out 0.3s both;
+            transition: all 0.3s ease;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .central-question:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* Bulles */
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 25px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            z-index: 10;
+            min-width: 220px;
+            max-width: 320px;
+            min-height: 80px;
+        }
+
+        .bubble:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .bubble.expanded {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(25px);
+            transform: translateY(-10px) scale(1.05);
+            z-index: 20;
+            max-width: 400px;
+            min-height: auto;
+            color: #333;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .bubble-header {
+            font-weight: 700;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            text-align: center;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .bubble.expanded .bubble-header {
+            color: #333;
+            text-shadow: none;
+        }
+
+        .bubble-content {
+            display: none;
+            font-size: 1em;
+            line-height: 1.6;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.95);
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .bubble.expanded .bubble-content {
+            display: block;
+            color: #333;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bullet-point {
+            margin: 12px 0;
+            padding-left: 20px;
+            position: relative;
+            font-size: 0.95em;
+        }
+
+        .bullet-point::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .bubble.expanded .bullet-point::before {
+            color: #667eea;
+        }
+
+        .example-box {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-style: italic;
+            border-left: 3px solid #667eea;
+            font-size: 0.85em;
+        }
+
+        /* Positionnement des bulles */
+        .objective-bubble {
+            top: 15%;
+            left: 5%;
+            animation: slideInLeft 1s ease-out 0.6s both;
+        }
+
+        .good-bubble {
+            top: 15%;
+            right: 5%;
+            animation: slideInRight 1s ease-out 0.8s both;
+        }
+
+        .bad-bubble {
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: slideInUp 1s ease-out 1s both;
+        }
+
+        .info-bubble {
+            top: 50%;
+            left: 2%;
+            transform: translateY(-50%);
+            animation: slideInLeft 1s ease-out 1.2s both;
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(100px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        /* Lignes de connexion */
+        .connection-line {
+            position: absolute;
+            background: linear-gradient(45deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+            height: 2px;
+            z-index: 5;
+            opacity: 0;
+            animation: drawLine 0.8s ease-out 1.2s both;
+        }
+
+        @keyframes drawLine {
+            from { opacity: 0; transform: scaleX(0); }
+            to { opacity: 0.4; transform: scaleX(1); }
+        }
+
+        .line-objective {
+            width: 120px;
+            top: 35%;
+            left: 25%;
+            transform: rotate(-20deg);
+            transform-origin: left center;
+        }
+
+        .line-good {
+            width: 120px;
+            top: 35%;
+            right: 25%;
+            transform: rotate(20deg);
+            transform-origin: right center;
+        }
+
+        .line-bad {
+            width: 100px;
+            bottom: 25%;
+            left: 50%;
+            transform: translateX(-50%) rotate(90deg);
+        }
+
+        .line-info {
+            width: 100px;
+            top: 50%;
+            left: 15%;
+            transform: translateY(-50%);
+        }
+
+        /* Contrôles de présentation */
+        .presentation-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Navigation */
+        .navigation {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            background: rgba(255, 255, 255, 0.05);
+            cursor: not-allowed;
+            transform: none;
+            opacity: 0.5;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1.1em;
+            z-index: 1000;
+        }
+
+        /* Styles pour les listes */
+        .tip-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tip-list li {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+            color: white;
+        }
+
+        .tip-list li::before {
+            content: "💡";
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .error-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .error-list li {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+            color: white;
+        }
+
+        .error-list li::before {
+            content: "❌";
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .success-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .success-list li {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+            color: white;
+        }
+
+        .success-list li::before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .central-question {
+                width: 260px;
+                height: 110px;
+                font-size: 1.2em;
+            }
+            
+            .bubble {
+                min-width: 180px;
+                max-width: 280px;
+                font-size: 0.9em;
+                padding: 20px;
+            }
+            
+            .bubble.expanded {
+                max-width: 320px;
+            }
+            
+            .objective-bubble {
+                top: 12%;
+                left: 3%;
+            }
+            
+            .good-bubble {
+                top: 12%;
+                right: 3%;
+            }
+            
+            .bad-bubble {
+                bottom: 8%;
+            }
+
+            .info-bubble {
+                display: none;
+            }
+
+            .competence-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navigation {
+                bottom: 10px;
+                right: 10px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                padding: 8px 16px;
+                font-size: 0.9em;
+            }
+        }
+    
+        /* Logo CREPI fixe en haut à gauche */
+        .crepi-logo {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            height: 55px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0.9;
+            z-index: 2000;
+            transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s ease;
+        }
+
+        .crepi-logo:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.08);
+        }
+
+        /* En mode plein écran : logo plus discret */
+        :fullscreen .crepi-logo,
+        :-webkit-full-screen .crepi-logo,
+        :-moz-full-screen .crepi-logo {
+            opacity: 0.3 !important;
+            background: rgba(255, 255, 255, 0.4) !important;
+            box-shadow: none !important;
+            transform: scale(0.9) !important;
+            pointer-events: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .crepi-logo {
+                height: 40px;
+                padding: 6px;
+                top: 10px;
+                left: 10px;
+            }
+        }
+
+        /* === Slides 2 & 3: état FERMÉ (bleu/violet), texte/icône cachés === */
+        #slide-2 .competence-item,
+        #slide-3 .competence-item {
+            border-radius: 18px;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        #slide-2 .competence-item:not(.open),
+        #slide-3 .competence-item:not(.open) {
+            background: rgba(255, 255, 255, 0.12) !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.18) !important;
+            backdrop-filter: blur(15px) !important;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.08) !important;
+        }
+        #slide-2 .competence-item:not(.open) .competence-title,
+        #slide-3 .competence-item:not(.open) .competence-title {
+            color: #ffffff !important;
+            text-align: center;
+            font-weight: 800;
+        }
+        #slide-2 .competence-item .competence-icon,
+        #slide-3 .competence-item .competence-icon,
+        #slide-2 .competence-item .competence-desc,
+        #slide-3 .competence-item .competence-desc { display: none; } /* overridden when [open] */
+
+        /* === Slides 2 & 3: état OUVERT (blanc), texte/icône visibles === */
+        #slide-2 .competence-item.open,
+        #slide-3 .competence-item.open {
+            background: #ffffff !important;
+            color: #111111 !important;
+            border: 1px solid rgba(0,0,0,0.06) !important;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12) !important;
+        }
+        #slide-2 .competence-item.open .competence-title,
+        #slide-3 .competence-item.open .competence-title {
+            color: #111111 !important;
+        }
+        #slide-2 .competence-item.open .competence-icon,
+        #slide-3 .competence-item.open .competence-icon {
+            display: block;
+            font-size: 2.5em;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        #slide-2 .competence-item.open .competence-desc,
+        #slide-3 .competence-item.open .competence-desc {
+            display: block;
+            color: #222222 !important;
+            margin-top: 8px;
+        }
+
+        /* Cartes Exemple/Exercice repliables */
+        #slide-2 .skill-example, #slide-3 .skill-example {
+            background: #ffffff !important;
+            color: #111 !important;
+            border: 1px solid rgba(0,0,0,0.06) !important;
+            border-radius: 16px !important;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.08) !important;
+            padding: 18px !important;
+            margin-top: 20px !important;
+        }
+        .example-card-header {
+            font-weight: 800;
+            font-size: 1.1em;
+            text-align: center;
+            cursor: pointer;
+            padding: 6px 4px;
+        }
+        .example-card-body { display: none; margin-top: 10px; }
+        .example-card.open .example-card-body { display: block; }
+
+        /* Carte de visite CREPI (hover + click) */
+        .crepi-card {
+            position: fixed;
+            top: 20px;
+            left: 90px; /* alignée à droite du logo */
+            min-width: 240px;
+            max-width: 300px;
+            background: #ffffff;
+            color: #111;
+            border-radius: 14px;
+            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+            padding: 12px 14px;
+            z-index: 3000;
+            display: none;
+        }
+        .crepi-card.visible { display: block !important; }
+        .crepi-card-header { font-weight: 800; font-size: 1.05em; margin-bottom: 6px; }
+        .crepi-card-body { font-size: 0.95em; line-height: 1.5; }
+        .crepi-card a { color: #2563eb; text-decoration: none; }
+        .crepi-card a:hover { text-decoration: underline; }
+        .crepi-card-sep { height: 1px; background: rgba(0,0,0,0.08); margin: 8px 0; }
+        /* Plein écran : on laisse actif */
+        :fullscreen .crepi-logo,
+        :-webkit-full-screen .crepi-logo,
+        :-moz-full-screen .crepi-logo { pointer-events: auto !important; }
+
+        /* --- CREPI logo --- */
+        .crepi-logo {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            height: 55px;
+            padding: 8px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0.9;
+            z-index: 2000;
+            transition: transform .3s ease, opacity .3s ease, background .3s ease;
+        }
+        .crepi-logo:hover { opacity: 1; background: #fff; transform: scale(1.08); }
+        @media (max-width: 768px) { .crepi-logo { height: 40px; padding: 6px; top: 10px; left: 10px; } }
+        :fullscreen .crepi-logo, :-webkit-full-screen .crepi-logo, :-moz-full-screen .crepi-logo { pointer-events:auto !important; }
+
+        /* --- Popup carte de visite --- */
+        .crepi-card {
+            position: fixed;
+            top: 20px;
+            left: 90px;
+            min-width: 240px;
+            max-width: 300px;
+            background: #fff;
+            color: #111;
+            border-radius: 14px;
+            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+            padding: 12px 14px;
+            z-index: 3000;
+            display: none;
+        }
+        .crepi-card.visible { display: block !important; }
+        .crepi-card-header { font-weight: 800; font-size: 1.05em; margin-bottom: 6px; }
+        .crepi-card-body { font-size: 0.95em; line-height: 1.5; }
+        .crepi-card a { color: #2563eb; text-decoration: none; }
+        .crepi-card a:hover { text-decoration: underline; }
+        .crepi-card-sep { height: 1px; background: rgba(0,0,0,0.08); margin: 8px 0; }
+
+        /* --- Slides 2 & 3 behaviours --- */
+        #slide-2 .competence-item, #slide-3 .competence-item {
+            border-radius: 18px;
+            cursor: pointer;
+            transition: transform .15s ease, box-shadow .15s ease;
+        }
+        /* Fermé = bleu/violet translucide, texte/icône cachés */
+        #slide-2 .competence-item:not(.open), #slide-3 .competence-item:not(.open) {
+            background: rgba(255,255,255,0.12) !important;
+            color: #fff !important;
+            border: 1px solid rgba(255,255,255,0.18) !important;
+            backdrop-filter: blur(15px) !important;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.08) !important;
+        }
+        #slide-2 .competence-item:not(.open) .competence-title,
+        #slide-3 .competence-item:not(.open) .competence-title { color:#fff !important; text-align:center; font-weight:800; }
+        #slide-2 .competence-item .competence-icon,
+        #slide-3 .competence-item .competence-icon,
+        #slide-2 .competence-item .competence-desc,
+        #slide-3 .competence-item .competence-desc { display:none; }
+
+        /* Ouvert = blanc, texte sombre, icône visible */
+        #slide-2 .competence-item.open, #slide-3 .competence-item.open {
+            background:#fff !important; color:#111 !important;
+            border:1px solid rgba(0,0,0,0.06) !important; box-shadow:0 12px 32px rgba(0,0,0,0.12) !important;
+        }
+        #slide-2 .competence-item.open .competence-title, #slide-3 .competence-item.open .competence-title { color:#111 !important; }
+        #slide-2 .competence-item.open .competence-icon, #slide-3 .competence-item.open .competence-icon { display:block; font-size:2.5em; margin-bottom:12px; text-align:center; }
+        #slide-2 .competence-item.open .competence-desc, #slide-3 .competence-item.open .competence-desc { display:block; color:#222 !important; margin-top:8px; }
+
+        /* Cartes Exemple/Exercice repliables */
+        #slide-2 .skill-example, #slide-3 .skill-example {
+            background:#fff !important; color:#111 !important; border:1px solid rgba(0,0,0,0.06) !important;
+            border-radius:16px !important; box-shadow:0 8px 22px rgba(0,0,0,0.08) !important;
+            padding:18px !important; margin-top:20px !important;
+        }
+        .example-card-header { font-weight:800; font-size:1.1em; text-align:center; cursor:pointer; padding:6px 4px; }
+        .example-card-body { display:none; margin-top:10px; }
+        .example-card.open .example-card-body { display:block; }
+
+        /* Fallback CSS: afficher la carte au survol du logo (même sans JS) */
+        .crepi-logo + #crepi-card { display: none; }
+        .crepi-logo:hover + #crepi-card { display: block; }
+        #crepi-card:hover { display: block; }
+        #crepi-card { pointer-events: auto; }
+        .crepi-logo { pointer-events: auto; }
+
+        /* === details/summary version (Firefox-friendly, no JS needed) === */
+        #slide-2 details.competence-item,
+        #slide-3 details.competence-item {
+            border-radius: 18px;
+            cursor: pointer;
+            transition: transform .15s ease, box-shadow .15s ease;
+            margin-bottom: 12px;
+            list-style: none;
+        }
+        #slide-2 details.competence-item > summary,
+        #slide-3 details.competence-item > summary {
+            outline: none;
+            list-style: none;
+        }
+        #slide-2 details.competence-item > summary::-webkit-details-marker,
+        #slide-3 details.competence-item > summary::-webkit-details-marker { display: none; }
+        /* Closed state = blue/violet translucent */
+        #slide-2 details.competence-item:not([open]),
+        #slide-3 details.competence-item:not([open]) {
+            background: rgba(255,255,255,0.12) !important;
+            color: #fff !important;
+            border: 1px solid rgba(255,255,255,0.18) !important;
+            backdrop-filter: blur(15px) !important;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.08) !important;
+        }
+        #slide-2 details.competence-item:not([open]) .competence-title,
+        #slide-3 details.competence-item:not([open]) .competence-title {
+            color: #fff !important;
+            text-align: center;
+            font-weight: 800;
+            padding: 8px 0;
+        }
+        #slide-2 details.competence-item:not([open]) .competence-content,
+        #slide-3 details.competence-item:not([open]) .competence-content {
+            display: none;
+        }
+        /* Open state = white */
+        #slide-2 details.competence-item[open],
+        #slide-3 details.competence-item[open] {
+            background: #fff !important;
+            color: #111 !important;
+            border: 1px solid rgba(0,0,0,0.06) !important;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12) !important;
+        }
+        #slide-2 details.competence-item[open] .competence-title,
+        #slide-3 details.competence-item[open] .competence-title {
+            color: #111 !important;
+        }
+        #slide-2 details.competence-item[open] .competence-icon,
+        #slide-3 details.competence-item[open] .competence-icon {
+            display: block;
+            font-size: 2.5em;
+            margin: 10px auto 8px;
+            text-align: center;
+        }
+        #slide-2 details.competence-item[open] .competence-desc,
+        #slide-3 details.competence-item[open] .competence-desc {
+            display: block;
+            color: #222 !important;
+            margin: 8px 0 6px;
+        }
+        /* Example/Exercise details */
+        details.example-card {
+            background:#fff !important; color:#111 !important; border:1px solid rgba(0,0,0,0.06) !important;
+            border-radius:16px !important; box-shadow:0 8px 22px rgba(0,0,0,0.08) !important;
+            padding: 12px 14px;
+        }
+        details.example-card > summary.example-card-header {
+            font-weight: 800; font-size: 1.1em; text-align: center; cursor: pointer; list-style: none; outline: none;
+        }
+        details.example-card > summary::-webkit-details-marker { display:none; }
+        details.example-card:not([open]) .example-card-body { display: none; }
+        details.example-card[open] .example-card-body { display: block; margin-top: 10px; }
+
+        /* --- Correctifs Firefox: forcer l'affichage du contenu quand ouvert --- */
+        #slide-2 details.competence-item[open] .competence-content,
+        #slide-3 details.competence-item[open] .competence-content { display: block !important; }
+        #slide-2 details.competence-item[open] .competence-desc,
+        #slide-3 details.competence-item[open] .competence-desc { display: block !important; }
+        #slide-2 details.competence-item[open] .competence-icon,
+        #slide-3 details.competence-item[open] .competence-icon { display: block !important; }
+
+        /* --- STABILITÉ FIREFOX : supprime les effets qui peuvent faire clignoter (backdrop-filter) --- */
+        #slide-2 details.competence-item,
+        #slide-3 details.competence-item { 
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            will-change: auto !important;
+        }
+        /* Zone cliquable large et fiable */
+        #slide-2 details.competence-item > summary,
+        #slide-3 details.competence-item > summary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 64px;
+            padding: 10px 16px;
+            user-select: none;
+            cursor: pointer;
+        }
+        /* Empêche les collisions d'empilement */
+        #slide-2, #slide-3 {
+            position: relative;
+            z-index: 10;
+            overflow: visible;
+        }
+        /* Contenu visible sans transition (élimine l'intermittence) */
+        #slide-2 details.competence-item[open] .competence-content,
+        #slide-3 details.competence-item[open] .competence-content {
+            display: block !important;
+        }
+        /* Uniformise les marges pour éviter les repositionnements brusques */
+        #slide-2 details.competence-item .competence-content,
+        #slide-3 details.competence-item .competence-content {
+            margin: 8px 12px 12px;
+        }
+        /* Option: désactiver toute animation sur ces blocs */
+        #slide-2 details.competence-item, #slide-3 details.competence-item {
+            transition: none !important;
+        }
+
+        /* === Robustesse clic Firefox (details/summary) === */
+        #slide-2 details.competence-item,
+        #slide-3 details.competence-item { position: relative; }
+        #slide-2 .competence-grid, #slide-3 .competence-grid { pointer-events: auto; position: relative; z-index: 2; }
+        #slide-2 details.competence-item > summary,
+        #slide-3 details.competence-item > summary {
+            display: block;
+            width: 100%;
+            padding: 14px 18px;
+            user-select: none;
+            cursor: pointer;
+        }
+        /* Remove default triangle marker */
+        #slide-2 details.competence-item > summary::-webkit-details-marker,
+        #slide-3 details.competence-item > summary::-webkit-details-marker { display: none; }
+        /* Ensure clicks inside content don't collapse unless link */
+        #slide-2 details.competence-item .competence-content,
+        #slide-3 details.competence-item .competence-content { pointer-events: auto; }
+</style>
+</head>
+<body>
+<!-- Logo CREPI -->
+<img alt="Logo CREPI" class="crepi-logo" src="images/640px-Logo_Fédération_Nationale_des_CREPI_-_2_couleurs.jpg"/><div class="crepi-card" id="crepi-card">
+<div class="crepi-card-header">CREPI Pyrénées</div>
+<div class="crepi-card-body">
+<div>5 chemin du Bac</div>
+<div>64230 Lescar</div>
+<div class="crepi-card-sep"></div>
+<div>Philippe Yvorra</div>
+<div><a href="mailto:philippe.yvorra@crepyrenees.com">philippe.yvorra@crepyrenees.com</a></div>
+<div><a href="tel:+33607013208">06 07 01 32 08</a></div>
+</div>
+</div>
+<div class="particles" id="particles"></div>
+<div class="presentation-container">
+<!-- Slide 1: Page de titre -->
+<div class="slide active title-slide">
+<div class="slide-header">
+<h1 class="slide-title">Identifier et Valoriser ses Compétences</h1>
+<p class="slide-subtitle">Reconversion • Orientation • Révélation de potentiel</p>
+<p style="margin-top: 30px; font-size: 1.2em;">Atelier Formation Professionnelle • Style PLS</p>
+</div>
+</div>
+<!-- Slide 2: Qu'est-ce qu'une compétence -->
+<div class="slide" id="slide-2">
+<div class="content-slide">
+<h1 class="content-title">🎯 Qu'est-ce qu'une Compétence ?</h1>
+<div class="content-section">
+<h3>📋 Définition Simple</h3>
+<p><strong>Compétence = Ce que vous savez faire + Comment vous le faites</strong></p>
+<p>C'est la combinaison de vos connaissances, votre savoir-faire et votre savoir-être appliqués dans une situation concrète.</p>
+</div>
+<div class="competence-grid">
+<details class="competence-item"><summary><div class="competence-title">SAVOIR</div></summary><div class="competence-content"><div class="competence-icon">🧠</div><div class="competence-desc">
+                            • Connaissances théoriques<br/>
+                            • Formations suivies<br/>
+                            • Culture générale<br/>
+                            • Langues parlées
+                        </div></div></details>
+<details class="competence-item"><summary><div class="competence-title">SAVOIR-FAIRE</div></summary><div class="competence-content"><div class="competence-icon">🛠️</div><div class="competence-desc">
+                            • Techniques maîtrisées<br/>
+                            • Logiciels utilisés<br/>
+                            • Gestes professionnels<br/>
+                            • Méthodes appliquées
+                        </div></div></details>
+<details class="competence-item"><summary><div class="competence-title">SAVOIR-ÊTRE</div></summary><div class="competence-content"><div class="competence-icon">❤️</div><div class="competence-desc">
+                            • Qualités personnelles<br/>
+                            • Façon de communiquer<br/>
+                            • Attitude au travail<br/>
+                            • Relations avec les autres
+                        </div></div></details>
+</div>
+<details class="example-card"><summary class="example-card-header">💡 Exemple concret</summary><div class="example-card-body">
+<br/>
+                    "Organiser un événement familial" = <br/>
+<strong>SAVOIR :</strong> Connaître les étapes d'organisation<br/>
+<strong>SAVOIR-FAIRE :</strong> Gérer un budget, coordonner des intervenants<br/>
+<strong>SAVOIR-ÊTRE :</strong> Être à l'écoute, gérer le stress, anticiper les problèmes
+                </div></details>
+<div class="content-section">
+<h3>🎯 Pourquoi c'est important ?</h3>
+<ul class="success-list">
+<li>Toutes vos expériences développent des compétences</li>
+<li>Même sans emploi "officiel", vous avez des compétences</li>
+<li>Vos compétences sont souvent transférables d'un domaine à l'autre</li>
+<li>Les identifier vous aide à choisir votre orientation</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Slide 3: Où trouver ses compétences cachées -->
+<div class="slide" id="slide-3">
+<div class="content-slide">
+<h1 class="content-title">🔍 Où Trouver ses Compétences Cachées ?</h1>
+<div class="competence-grid">
+<details class="competence-item"><summary><div class="competence-title">VIE FAMILIALE</div></summary><div class="competence-content"><div class="competence-icon">🏠</div><div class="competence-desc">
+                            • Gérer un budget familial → Gestion financière<br/>
+                            • Éduquer des enfants → Pédagogie, patience<br/>
+                            • Organiser les vacances → Planification, négociation<br/>
+                            • Aide aux devoirs → Transmission, adaptation
+                        </div></div></details>
+<details class="competence-item"><summary><div class="competence-title">BÉNÉVOLAT</div></summary><div class="competence-content"><div class="competence-icon">🤝</div><div class="competence-desc">
+                            • Animer une association → Leadership<br/>
+                            • Organiser des événements → Gestion de projet<br/>
+                            • Aider des personnes → Empathie, écoute<br/>
+                            • Tenir une comptabilité → Rigueur, précision
+                        </div></div></details>
+<details class="competence-item"><summary><div class="competence-title">FORMATIONS</div></summary><div class="competence-content"><div class="competence-icon">🎓</div><div class="competence-desc">
+                            • Suivre des cours → Capacité d'apprentissage<br/>
+                            • Réussir un examen → Persévérance<br/>
+                            • Faire un stage → Adaptation<br/>
+                            • Valider un diplôme → Méthode, organisation
+                        </div></div></details>
+<details class="competence-item"><summary><div class="competence-title">LOISIRS &amp; SPORT</div></summary><div class="competence-content"><div class="competence-icon">⚽</div><div class="competence-desc">
+                            • Capitaine d'équipe → Leadership<br/>
+                            • Pratiquer un art → Créativité, persévérance<br/>
+                            • Jardiner → Patience, observation<br/>
+                            • Bricoler → Résolution de problèmes
+                        </div></div></details>
+<details class="competence-item"><summary><div class="competence-title">PETITS JOBS</div></summary><div class="competence-content"><div class="competence-icon">💼</div><div class="competence-desc">
+                            • Serveur/se → Gestion du stress, service<br/>
+                            • Baby-sitting → Responsabilité, réactivité<br/>
+                            • Livraison → Autonomie, ponctualité<br/>
+                            • Vente → Communication, persuasion
+                        </div></div></details>
+<details class="competence-item"><summary><div class="competence-title">NUMÉRIQUE</div></summary><div class="competence-content"><div class="competence-icon">🌐</div><div class="competence-desc">
+                            • Utiliser les réseaux sociaux → Communication digitale<br/>
+                            • Faire des achats en ligne → Recherche, comparaison<br/>
+                            • Aider famille avec ordi → Support technique<br/>
+                            • Créer des contenus → Créativité digitale
+                        </div></div></details>
+</div>
+<details class="example-card"><summary class="example-card-header">💡 Exercice pratique</summary><div class="example-card-body">
+<br/>
+                    Pensez à 3 situations de votre vie (travail, famille, loisirs) où vous avez réussi quelque chose. 
+                    Pour chacune, identifiez : Qu'avez-vous fait concrètement ? Comment l'avez-vous fait ? Quelles qualités avez-vous mobilisées ?
+                </div></details>
+</div>
+</div>
+<!-- Slide 4: Hard Skills vs Soft Skills -->
+<div class="slide">
+<h1 class="question-title">Hard Skills vs Soft Skills</h1>
+<div class="mindmap-container">
+<div class="connection-line line-objective"></div>
+<div class="connection-line line-good"></div>
+<div class="connection-line line-bad"></div>
+<div class="central-question">2 Types de Compétences</div>
+<div class="bubble objective-bubble" onclick="toggleBubble(this)">
+<div class="bubble-header">🛠️ Hard Skills (Techniques)</div>
+<div class="bubble-content">
+<div class="bullet-point">Compétences mesurables et concrètes</div>
+<div class="bullet-point">S'apprennent par la formation ou l'expérience</div>
+<div class="bullet-point">Faciles à évaluer et certifier</div>
+<div class="example-box">
+<strong>Exemples :</strong><br/>
+                            • Maîtriser Excel, Word<br/>
+                            • Parler anglais (niveau B2)<br/>
+                            • Conduire (permis B)<br/>
+                            • Savoir cuisiner<br/>
+                            • Connaître la comptabilité
+                        </div>
+</div>
+</div>
+<div class="bubble good-bubble" onclick="toggleBubble(this)">
+<div class="bubble-header">❤️ Soft Skills (Relationnelles)</div>
+<div class="bubble-content">
+<div class="bullet-point">Qualités personnelles et comportementales</div>
+<div class="bullet-point">Façon dont vous travaillez et interagissez</div>
+<div class="bullet-point">Difficiles à mesurer mais très valorisées</div>
+<div class="example-box">
+<strong>Exemples :</strong><br/>
+                            • Être à l'écoute<br/>
+                            • Savoir gérer son stress<br/>
+                            • Être organisé(e)<br/>
+                            • Avoir l'esprit d'équipe<br/>
+                            • Être patient(e) et pédagogue
+                        </div>
+</div>
+</div>
+<div class="bubble bad-bubble" onclick="toggleBubble(this)">
+<div class="bubble-header">⚖️ L'équilibre parfait</div>
+<div class="bubble-content">
+<div class="bullet-point">Les 2 types sont complémentaires</div>
+<div class="bullet-point">Hard skills = ce que vous pouvez faire</div>
+<div class="bullet-point">Soft skills = comment vous le faites</div>
+<div class="example-box">
+<strong>Exemple complet :</strong><br/>
+<strong>Poste :</strong> Aide à domicile<br/>
+<strong>Hard :</strong> Connaître les gestes d'hygiène<br/>
+<strong>Soft :</strong> Être bienveillant et respectueux
+                        </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Slide 5: Comment valoriser ses compétences selon le contexte -->
+<div class="slide">
+<h1 class="question-title">Valoriser selon le Contexte</h1>
+<div class="mindmap-container">
+<div class="connection-line line-objective"></div>
+<div class="connection-line line-good"></div>
+<div class="connection-line line-bad"></div>
+<div class="connection-line line-info"></div>
+<div class="central-question">Adapter ses Compétences</div>
+<div class="bubble objective-bubble" onclick="toggleBubble(this)">
+<div class="bubble-header">💼 Pour un Emploi</div>
+<div class="bubble-content">
+<div class="bullet-point">Lire attentivement l'offre d'emploi</div>
+<div class="bullet-point">Identifier les compétences demandées</div>
+<div class="bullet-point">Faire le lien avec vos expériences</div>
+<div class="example-box">
+<strong>Offre :</strong> "Recherche vendeur, contact client"<br/>
+<strong>Votre expérience :</strong> "Animation fête d'école"<br/>
+<strong>Lien :</strong> "Sens du contact et animation"
+                        </div>
+</div>
+</div>
+<div class="bubble good-bubble" onclick="toggleBubble(this)">
+<div class="bubble-header">🎯 Pour une Formation</div>
+<div class="bubble-content">
+<div class="bullet-point">Montrer votre motivation et capacité d'apprentissage</div>
+<div class="bullet-point">Mettre en avant vos qualités d'adaptation</div>
+<div class="bullet-point">Expliquer votre projet professionnel</div>
+<div class="example-box">
+<strong>Formation :</strong> Aide-soignant<br/>
+<strong>Vos atouts :</strong> "Aide de mes parents âgés"<br/>
+<strong>Lien :</strong> "Patience, bienveillance, résistance physique"
+                        </div>
+</div>
+</div>
+<div class="bubble bad-bubble" onclick="toggleBubble(this)">
+<div class="bubble-header">🚀 Pour Entreprendre</div>
+<div class="bubble-content">
+<div class="bullet-point">Mettre en avant autonomie et initiative</div>
+<div class="bullet-point">Montrer vos capacités de gestion</div>
+<div class="bullet-point">Valoriser votre créativité et persévérance</div>
+<div class="example-box">
+<strong>Projet :</strong> Ouvrir un food truck<br/>
+<strong>Vos atouts :</strong> "Organisation repas famille nombreuse"<br/>
+<strong>Lien :</strong> "Gestion budget, organisation, goût culinaire"
+                        </div>
+</div>
+</div>
+<div class="bubble info-bubble" onclick="toggleBubble(this)">
+<div class="bubble-header">💡 La règle d'or</div>
+<div class="bubble-content">
+<div class="bullet-point">Utilisez le vocabulaire professionnel</div>
+<div class="bullet-point">Donnez des exemples concrets</div>
+<div class="bullet-point">Quantifiez quand c'est possible</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Slide 6: Reconversion professionnelle -->
+<div class="slide">
+<div class="content-slide">
+<h1 class="content-title">🔄 Compétences et Reconversion</h1>
+<div class="content-section">
+<h3>🌉 Vos Compétences sont Transférables</h3>
+<p>Même en changeant de domaine, beaucoup de vos compétences restent utiles. Il faut juste apprendre à les "traduire" dans votre nouveau secteur.</p>
+</div>
+<div class="competence-grid">
+<div class="competence-item">
+<div class="competence-icon">👩‍🍳</div>
+<div class="competence-title">DE MÈRE AU FOYER</div>
+<div class="competence-desc">
+<strong>→ Vers Assistant(e) Administrative</strong><br/>
+                            • Gestion planning familial → Organisation<br/>
+                            • Budget courses → Gestion financière<br/>
+                            • Aide aux devoirs → Pédagogie<br/>
+                            • Gestion des urgences → Réactivité
+                        </div>
+</div>
+<div class="competence-item">
+<div class="competence-icon">🍽️</div>
+<div class="competence-title">DE SERVEUR/SE</div>
+<div class="competence-desc">
+<strong>→ Vers Commercial(e)</strong><br/>
+                            • Accueil client → Relation client<br/>
+                            • Mémoriser commandes → Organisation<br/>
+                            • Gestion rush → Résistance au stress<br/>
+                            • Conseils menu → Argumentation
+                        </div>
+</div>
+<div class="competence-item">
+<div class="competence-icon">🚗</div>
+<div class="competence-title">DE CHAUFFEUR</div>
+<div class="competence-desc">
+<strong>→ Vers Logistique</strong><br/>
+                            • Respect horaires → Ponctualité<br/>
+                            • Itinéraires optimaux → Optimisation<br/>
+                            • Entretien véhicule → Maintenance<br/>
+                            • Contact clients → Service client
+                        </div>
+</div>
+</div>
+<div class="skill-example">
+<strong>💡 Méthode de reconversion :</strong><br/>
+<strong>1.</strong> Listez TOUTES vos expériences (même personnelles)<br/>
+<strong>2.</strong> Identifiez les compétences développées dans chacune<br/>
+<strong>3.</strong> Recherchez les métiers qui utilisent ces compétences<br/>
+<strong>4.</strong> Identifiez les compétences manquantes à acquérir<br/>
+<strong>5.</strong> Planifiez votre formation ou transition progressive
+                </div>
+<div class="content-section">
+<h3>🎯 Secteurs Accessibles en Reconversion</h3>
+<ul class="success-list">
+<li>Services à la personne (aide, ménage, garde d'enfants)</li>
+<li>Commerce et vente (vos qualités relationnelles comptent)</li>
+<li>Administration (organisation et rigueur valorisées)</li>
+<li>Sécurité et logistique (sens des responsabilités)</li>
+<li>Formation et accompagnement (transmission d'expérience)</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Slide 7: Auto-évaluation -->
+<div class="slide">
+<h1 class="question-title">S'Auto-Évaluer</h1>
+<div class="mindmap-container">
+<div class="connection-line line-objective"></div>
+<div class="connection-line line-good"></div>
+<div class="connection-line line-bad"></div>
+<div class="central-question">Connaître son Niveau</div>
+<div class="bubble objective-bubble" onclick="toggleBubble(this)">
+<div class="bubble-header">📊 Les 4 Niveaux</div>
+<div class="bubble-content">
+<div class="bullet-point"><strong>Débutant :</strong> J'ai des notions, besoin d'aide</div>
+<div class="bullet-point"><strong>Intermédiaire :</strong> Je me débrouille seul(e)</div>
+<div class="bullet-point"><strong>Confirmé :</strong> Je maîtrise bien</div>
+<div class="bullet-point"><strong>Expert :</strong> Je peux former les autres</div>
+<div class="example-box">
+<strong>Exemple Excel :</strong><br/>
+                            Débutant : Saisir des données<br/>
+                            Confirmé : Faire des calculs et graphiques<br/>
+                            Expert : Créer des macros complexes
+                        </div>
+</div>
+</div>
+<div class="bubble good-bubble" onclick="toggleBubble(this)">
+<div class="bubble-header">✅ Comment s'évaluer</div>
+<div class="bubble-content">
+<div class="bullet-point">Soyez honnête avec vous-même</div>
+<div class="bullet-point">Basez-vous sur des exemples concrets</div>
+<div class="bullet-point">Demandez l'avis de votre entourage</div>
+<div class="example-box">
+<strong>Questions à se poser :</strong><br/>
+                            • Ai-je déjà fait cela souvent ?<br/>
+                            • Est-ce que je réussis à chaque fois ?<br/>
+                            • Les autres me demandent-ils conseil ?<br/>
+                            • Suis-je à l'aise dans cette situation ?
+                        </div>
+</div>
+</div>
+<div class="bubble bad-bubble" onclick="toggleBubble(this)">
+<div class="bubble-header">⚠️ Erreurs à éviter</div>
+<div class="bubble-content">
+<div class="bullet-point">Ne pas se sous-estimer (syndrome de l'imposteur)</div>
+<div class="bullet-point">Ne pas surestimer non plus (soyez réaliste)</div>
+<div class="bullet-point">Ne pas confondre "j'aime" et "je sais faire"</div>
+<div class="example-box">
+<strong>Piège classique :</strong><br/>
+                            "J'utilise Facebook tous les jours"<br/>
+                            ≠ "Je maîtrise le marketing digital"<br/>
+                            = "Je connais les réseaux sociaux"
+                        </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Slide 8: Présenter ses compétences -->
+<div class="slide">
+<div class="content-slide">
+<h1 class="content-title">📝 Comment Présenter ses Compétences</h1>
+<div class="content-section">
+<h3>📋 Sur un CV</h3>
+<div class="competence-grid">
+<div class="competence-item">
+<div class="competence-title">❌ À éviter</div>
+<div class="competence-desc">
+                                • Listes à puces interminables<br/>
+                                • "Dynamique, motivé, sérieux"<br/>
+                                • Barres de progression fantaisistes<br/>
+                                • Compétences sans exemples
+                            </div>
+</div>
+<div class="competence-item">
+<div class="competence-title">✅ À préférer</div>
+<div class="competence-desc">
+                                • Maximum 6-8 compétences principales<br/>
+                                • Exemples concrets pour chacune<br/>
+                                • Niveau précisé simplement<br/>
+                                • Liées au poste recherché
+                            </div>
+</div>
+</div>
+</div>
+<div class="skill-example">
+<strong>💡 Exemple de présentation CV :</strong><br/>
+<strong>COMPÉTENCES PRINCIPALES</strong><br/>
+                    • <strong>Organisation :</strong> Gestion planning familial de 4 enfants (5 ans d'expérience)<br/>
+                    • <strong>Budget :</strong> Gestion budget familial 3000€/mois, économies réalisées<br/>
+                    • <strong>Relation client :</strong> Accueil et conseil bénévole association caritative<br/>
+                    • <strong>Bureautique :</strong> Word, Excel (niveau intermédiaire), PowerPoint (bases)
+                </div>
+<div class="content-section">
+<h3>🗣️ En Entretien</h3>
+<ul class="tip-list">
+<li>Racontez une histoire concrète pour chaque compétence</li>
+<li>Utilisez la méthode STAR : Situation, Tâche, Action, Résultat</li>
+<li>Montrez comment cette compétence sera utile au poste</li>
+<li>Soyez sincère sur votre niveau et votre envie d'apprendre</li>
+</ul>
+</div>
+<div class="skill-example">
+<strong>💡 Exemple méthode STAR :</strong><br/>
+<strong>Situation :</strong> "Lors de l'organisation du mariage de ma sœur..."<br/>
+<strong>Tâche :</strong> "Je devais coordonner 15 prestataires avec un budget de 8000€"<br/>
+<strong>Action :</strong> "J'ai créé un planning détaillé et fait jouer la concurrence"<br/>
+<strong>Résultat :</strong> "Événement réussi et 1000€ d'économies réalisées"
+                </div>
+<div class="content-section">
+<h3>🌐 Sur LinkedIn / Réseaux</h3>
+<ul class="success-list">
+<li>Utilisez les mots-clés de votre secteur cible</li>
+<li>Partagez des exemples de vos réalisations</li>
+<li>Demandez des recommandations à vos contacts</li>
+<li>Participez à des groupes liés à vos compétences</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Slide 9: Plan d'action -->
+<div class="slide">
+<div class="content-slide">
+<h1 class="content-title">🎯 Votre Plan d'Action</h1>
+<div class="content-section">
+<h3>📝 Étape 1 : Faire le Bilan</h3>
+<ul class="tip-list">
+<li>Listez toutes vos expériences (pro, perso, bénévolat, loisirs)</li>
+<li>Pour chacune, notez 3 compétences développées</li>
+<li>Classez-les en Hard Skills et Soft Skills</li>
+<li>Auto-évaluez votre niveau sur chaque compétence</li>
+<li>Demandez l'avis de 3 proches sur vos points forts</li>
+</ul>
+</div>
+<div class="content-section">
+<h3>🔍 Étape 2 : Explorer les Possibilités</h3>
+<ul class="tip-list">
+<li>Recherchez les métiers qui utilisent vos compétences principales</li>
+<li>Consultez les offres d'emploi de ces secteurs</li>
+<li>Identifiez les compétences les plus demandées</li>
+<li>Rencontrez des professionnels de ces métiers</li>
+<li>Testez via stages, bénévolat ou missions courtes</li>
+</ul>
+</div>
+<div class="content-section">
+<h3>📚 Étape 3 : Combler les Lacunes</h3>
+<ul class="tip-list">
+<li>Identifiez les compétences manquantes prioritaires</li>
+<li>Recherchez les formations adaptées (courtes, pratiques)</li>
+<li>Utilisez les formations gratuites en ligne</li>
+<li>Pratiquez dans votre quotidien ou en bénévolat</li>
+<li>Obtenez des certifications reconnues si nécessaire</li>
+</ul>
+</div>
+<div class="competence-grid">
+<div class="competence-item">
+<div class="competence-icon">🎯</div>
+<div class="competence-title">OBJECTIF EMPLOI</div>
+<div class="competence-desc">
+                            • Adapter CV et lettre motivation<br/>
+                            • Préparer exemples pour entretiens<br/>
+                            • Postuler de façon ciblée<br/>
+                            • Utiliser son réseau personnel
+                        </div>
+</div>
+<div class="competence-item">
+<div class="competence-icon">📖</div>
+<div class="competence-title">OBJECTIF FORMATION</div>
+<div class="competence-desc">
+                            • Constituer dossier de candidature<br/>
+                            • Préparer entretien de motivation<br/>
+                            • Valoriser expérience acquise<br/>
+                            • Montrer projet professionnel
+                        </div>
+</div>
+<div class="competence-item">
+<div class="competence-icon">🚀</div>
+<div class="competence-title">OBJECTIF CRÉATION</div>
+<div class="competence-desc">
+                            • Étudier la faisabilité<br/>
+                            • Acquérir compétences entrepreneuriales<br/>
+                            • Tester son idée en petit<br/>
+                            • Se faire accompagner
+                        </div>
+</div>
+</div>
+<div class="skill-example">
+<strong>💡 Ressources utiles :</strong><br/>
+                    • <strong>Bilan de compétences :</strong> Pôle Emploi, APEC, organismes agréés<br/>
+                    • <strong>Tests gratuits :</strong> 16personalities.com, competences.info<br/>
+                    • <strong>Formations :</strong> OpenClassrooms, FUN-MOOC, YouTube<br/>
+                    • <strong>Réseautage :</strong> LinkedIn, meetups locaux, anciens collègues
+                </div>
+</div>
+</div>
+<!-- Slide 10: Conclusion -->
+<div class="slide title-slide">
+<div class="slide-header">
+<h1 class="slide-title" style="font-size: 3em;">À Retenir</h1>
+<p class="slide-subtitle" style="font-size: 1.5em; margin-top: 40px;">
+                    Vos Compétences sont un Trésor à Révéler
+                </p>
+<div style="margin-top: 50px; font-size: 1.2em; line-height: 1.8;">
+<p>🔍 <strong>Cherchez partout :</strong> Toutes vos expériences comptent</p>
+<p>🏷️ <strong>Classifiez :</strong> Hard skills ET soft skills</p>
+<p>📏 <strong>Évaluez-vous :</strong> Soyez réaliste sur votre niveau</p>
+<p>🎯 <strong>Adaptez :</strong> Selon le contexte et l'objectif</p>
+<p>📝 <strong>Présentez bien :</strong> Avec des exemples concrets</p>
+<p>🚀 <strong>Agissez :</strong> Plan d'action en 3 étapes</p>
+</div>
+<p style="margin-top: 60px; font-size: 1.4em; font-weight: bold; color: #fbbf24;">
+                    Vous avez plus de compétences que vous ne le pensez ! 💪
+                </p>
+</div>
+</div>
+<!-- Contrôles de présentation -->
+<div class="presentation-controls">
+<button class="control-btn" id="fullscreenBtn" onclick="toggleFullscreen()">📺 Plein écran</button>
+</div>
+<!-- Navigation -->
+<div class="navigation">
+<button class="nav-btn" id="prevBtn" onclick="previousSlide()">← Précédent</button>
+<button class="nav-btn" id="nextBtn" onclick="nextSlide()">Suivant →</button>
+</div>
+<div class="slide-counter" id="slideCounter">1 / 10</div>
+</div>
+<script>
+        // Création des particules flottantes
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 15;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 4 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = n;
+            
+            if (currentSlide >= totalSlides) currentSlide = 0;
+            if (currentSlide < 0) currentSlide = totalSlides - 1;
+            
+            slides[currentSlide].classList.add('active');
+            updateNavigation();
+            updateCounter();
+        initClickableCards_Slides2_3();
+            
+            // Reset all bubbles when changing slide
+            const bubbles = slides[currentSlide].querySelectorAll('.bubble');
+            bubbles.forEach(bubble => {
+                bubble.classList.remove('expanded');
+            });
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        function updateNavigation() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+        }
+
+        function updateCounter() {
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+        }
+
+        function toggleBubble(bubble) {
+            // Close all other bubbles in the current slide
+            const currentSlideBubbles = slides[currentSlide].querySelectorAll('.bubble');
+            currentSlideBubbles.forEach(b => {
+                if (b !== bubble) {
+                    b.classList.remove('expanded');
+                }
+            });
+            
+            // Toggle the clicked bubble
+            bubble.classList.toggle('expanded');
+        }
+
+        // Fonction plein écran
+        function toggleFullscreen() {
+            const elem = document.documentElement;
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            
+            if (!document.fullscreenElement) {
+                elem.requestFullscreen().then(() => {
+                    fullscreenBtn.textContent = '🪟 Sortir plein écran';
+                }).catch(err => {
+                    console.log('Erreur plein écran:', err);
+                });
+            } else {
+                document.exitFullscreen().then(() => {
+                    fullscreenBtn.textContent = '📺 Plein écran';
+                });
+            }
+        }
+
+        // Écouter les changements de plein écran
+        document.addEventListener('fullscreenchange', () => {
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            if (!document.fullscreenElement) {
+                fullscreenBtn.textContent = '📺 Plein écran';
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                if (currentSlide < totalSlides - 1) {
+                    nextSlide();
+                }
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                if (currentSlide > 0) {
+                    previousSlide();
+                }
+            } else if (e.key === 'Escape') {
+                // Close all expanded bubbles
+                const bubbles = slides[currentSlide].querySelectorAll('.bubble');
+                bubbles.forEach(bubble => {
+                    bubble.classList.remove('expanded');
+                });
+                
+                // Exit fullscreen if active
+                if (document.fullscreenElement) {
+                    document.exitFullscreen();
+                }
+            } else if (e.key === 'f' || e.key === 'F') {
+                // Toggle fullscreen with F key
+                e.preventDefault();
+                toggleFullscreen();
+            }
+        });
+
+        
+        // Slides 2 & 3: cartes cliquables (multiples ouvertes)
+        function initClickableCards_Slides2_3() {
+            ['slide-2','slide-3'].forEach(id => {
+                const slide = document.getElementById(id);
+                if (!slide) return;
+                const cards = slide.querySelectorAll('.competence-item');
+                cards.forEach(card => {
+                    const desc = card.querySelector('.competence-desc');
+                    const icon = card.querySelector('.competence-icon');
+                    // Ensure closed state initially
+                    if (card.classList.contains('open')) {
+                        if (desc) desc.style.display = 'block';
+                        if (icon) icon.style.display = 'block';
+                    } else {
+                        if (desc) desc.style.display = 'none';
+                        if (icon) icon.style.display = 'none';
+                    }
+                    card.addEventListener('click', (e) => {
+                        const isOpen = card.classList.toggle('open');
+                        if (desc) desc.style.display = isOpen ? 'block' : 'none';
+                        if (icon) icon.style.display = isOpen ? 'block' : 'none';
+                        e.stopPropagation();
+                    });
+                });
+
+                // Skill example/exercise collapsible
+                const skillExample = slide.querySelector('.skill-example');
+                if (skillExample && !skillExample.classList.contains('example-card')) {
+                    skillExample.classList.add('example-card');
+                    const firstStrong = skillExample.querySelector('strong');
+                    let headerText = '💡 Exemple';
+                    if (firstStrong) {
+                        headerText = firstStrong.textContent.replace(/\s*:\s*$/, '');
+                        firstStrong.remove();
+                    }
+                    const header = document.createElement('div');
+                    header.className = 'example-card-header';
+                    header.textContent = headerText;
+                    const body = document.createElement('div');
+                    body.className = 'example-card-body';
+                    while (skillExample.firstChild) {
+                        body.appendChild(skillExample.firstChild);
+                    }
+                    skillExample.appendChild(header);
+                    skillExample.appendChild(body);
+                    header.addEventListener('click', (e) => {
+                        skillExample.classList.toggle('open');
+                        e.stopPropagation();
+                    });
+                }
+            });
+        }
+
+        // Initialize
+        createParticles();
+        updateNavigation();
+        updateCounter();
+        initClickableCards_Slides2_3();
+
+        console.log(`Atelier Compétences PLS - ${totalSlides} slides - Spécial reconversion`);
+    
+
+        function initCrepiCardHoverClick() {
+            const logo = document.querySelector('.crepi-logo');
+            const card = document.getElementById('crepi-card');
+            if (!logo || !card) return;
+            let hideTimer = null;
+            let pinned = false;
+
+            function showCard() {
+                if (pinned) {
+                    card.classList.add('visible');
+                    card.style.display = 'block';
+                    return;
+                }
+                card.style.display = 'block';
+            }
+            function hideCard() {
+                if (pinned) return;
+                hideTimer = setTimeout(() => {
+                    card.style.display = 'none';
+                    card.classList.remove('visible');
+                }, 120);
+            }
+
+            logo.addEventListener('mouseenter', () => {
+                if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+                showCard();
+            });
+            logo.addEventListener('mouseleave', hideCard);
+            card.addEventListener('mouseenter', () => {
+                if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+                showCard();
+            });
+            card.addEventListener('mouseleave', hideCard);
+
+            // Click to pin/unpin
+            logo.addEventListener('click', (e) => {
+                e.stopPropagation();
+                pinned = !pinned;
+                if (pinned) {
+                    card.classList.add('visible');
+                    card.style.display = 'block';
+                } else {
+                    card.classList.remove('visible');
+                    card.style.display = 'none';
+                }
+            });
+
+            // Click outside to close
+            document.addEventListener('click', (e) => {
+                const inside = card.contains(e.target) || logo.contains(e.target);
+                if (!inside) {
+                    pinned = false;
+                    card.classList.remove('visible');
+                    card.style.display = 'none';
+                }
+            }, true);
+
+            // Touch support
+            logo.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                pinned = !pinned;
+                if (pinned) {
+                    card.classList.add('visible');
+                    card.style.display = 'block';
+                } else {
+                    card.classList.remove('visible');
+                    card.style.display = 'none';
+                }
+            }, { passive: false });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+        if (typeof initClickableCards_Slides2_3 === 'function') {
+            initClickableCards_Slides2_3();
+        }
+        if (typeof initCrepiCardHoverClick === 'function') {
+            initCrepiCardHoverClick();
+        }
+
+        });
+
+
+        // Robust delegation: toggle competence cards even if init didn't attach
+        (function(){
+            document.addEventListener('click', function(e){
+                const card = e.target.closest('#slide-2 .competence-item, #slide-3 .competence-item');
+                if (card) {
+                    const desc = card.querySelector('.competence-desc');
+                    const icon = card.querySelector('.competence-icon');
+                    const isOpen = card.classList.toggle('open');
+                    if (desc) desc.style.display = isOpen ? 'block' : 'none';
+                    if (icon) icon.style.display = isOpen ? 'block' : 'none';
+                    return;
+                }
+            }, true);
+        })();
+
+        // Ensure example/exercise cards are build once DOM loaded
+        document.addEventListener('DOMContentLoaded', function(){
+            ['slide-2','slide-3'].forEach(id => {
+                const slide = document.getElementById(id);
+                if (!slide) return;
+                const skillExample = slide.querySelector('.skill-example');
+                if (skillExample && !skillExample.classList.contains('example-card')) {
+                    skillExample.classList.add('example-card');
+                    const firstStrong = skillExample.querySelector('strong');
+                    let headerText = '💡 Exemple';
+                    if (firstStrong) { headerText = firstStrong.textContent.replace(/\s*:\s*$/, ''); firstStrong.remove(); }
+                    const header = document.createElement('div'); header.className='example-card-header'; header.textContent=headerText;
+                    const body = document.createElement('div'); body.className='example-card-body';
+                    while (skillExample.firstChild) body.appendChild(skillExample.firstChild);
+                    skillExample.appendChild(header); skillExample.appendChild(body);
+                    header.addEventListener('click', (e)=>{ skillExample.classList.toggle('open'); e.stopPropagation(); });
+                }
+            });
+        });
+
+
+        // Robust click handling for Firefox/local: toggle <details> when clicking anywhere in the card (except links)
+        (function(){
+            document.addEventListener('click', function(e){
+                const details = e.target.closest('#slide-2 details.competence-item, #slide-3 details.competence-item');
+                if (!details) return;
+                // allow links inside content
+                if (e.target.closest('a')) return;
+                const clickedSummary = e.target.closest('summary');
+                if (!clickedSummary) {
+                    // Toggle manually if clicked not on summary
+                    details.open = !details.open;
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            }, true);
+        })();
+</script>
+</body>
+</html>
